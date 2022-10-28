@@ -40,8 +40,8 @@ const errorHandler = (error, req, res, next) => {
 		return res.status(400).send({ error: 'invalid id provided' })
 	}
 
-	if(error.name === 'JsonWebTokenError') {
-		return res.status(401).send({ error: 'token missing or invalid'})
+	if (error.name === 'JsonWebTokenError') {
+		return res.status(401).send({ error: 'token missing or invalid' })
 	}
 
 	next(error)
@@ -49,10 +49,9 @@ const errorHandler = (error, req, res, next) => {
 
 const tokenExtractor = (req, res, next) => {
 	const authorization = req.get('authorization')
-	
-	if(authorization && authorization.toLowerCase().startsWith('bearer ')) {
+
+	if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
 		req.token = authorization.substring(7)
-		
 	}
 
 	next()
@@ -63,5 +62,5 @@ module.exports = {
 	unknownEndpoint,
 	errorHandler,
 	authenticate,
-	tokenExtractor
+	tokenExtractor,
 }

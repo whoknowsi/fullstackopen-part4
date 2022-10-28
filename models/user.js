@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
 
 })
 
-userSchema.plugin(uniqueValidator)
+userSchema.plugin(uniqueValidator, { message: '{PATH} is already taken' })
 userSchema.set('toJSON', {
     transform: (document, returnedObject) => {
 		returnedObject.id = returnedObject._id.toString()
