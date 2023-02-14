@@ -4,13 +4,13 @@ const User = require('../models/user')
 const { authenticate } = require('../utils/middleware')
 
 router.get('/', async (req, res) => {
-	const foundBlogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
+	const foundBlogs = await Blog.find({}).populate('user', { username: 1, name: 1 }).populate('comments', { comment: 1 })
 	res.json(foundBlogs)
 })
 
 router.get('/:id', async (req, res) => {
 	const id = req.params.id
-	const foundBlog = await Blog.findById(id).populate('user', { username: 1, name: 1 })
+	const foundBlog = await Blog.findById(id).populate('user', { username: 1, name: 1 }).populate('comments', { comment: 1 })
 	foundBlog ? res.json(foundBlog) : res.status(404).json({ message: 'blog not found' })
 })
 
@@ -41,7 +41,7 @@ router.put('/:id', async (req, res) => {
 	const updatedBlog = await Blog.findByIdAndUpdate(blogId, toUpdate, {
 		new: true,
 		runValidators: true,
-	}).populate('user', { username: 1, name: 1 })
+	}).populate('user', { username: 1, name: 1 }).populate('comments', { comment: 1 })
 
 	res.status(200).json(updatedBlog)
 })
@@ -61,7 +61,7 @@ router.delete('/:id', authenticate, async (req, res) => {
 	const deletedBlog = await Blog.findByIdAndDelete(blogId).populate('user', {
 		username: 1,
 		name: 1,
-	})
+	}).populate('comments', { comment: 1 })
 	res.status(200).json(deletedBlog)
 })
 
